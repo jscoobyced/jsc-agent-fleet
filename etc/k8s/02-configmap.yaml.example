@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jsc-opencode-web-config
+  namespace: opencode-ns
+data:
+  opencode.jsonc: |
+    {
+      "$schema": "https://opencode.ai/config.json",
+      "autoupdate": true,
+      "plugin": ["@dietrichgebert/ponytail"],
+      "enabled_providers": ["llama.cpp"],
+      "provider": {
+        "llama.cpp": {
+          "npm": "@ai-sdk/openai-compatible",
+          "name": "llama-server",
+          "options": {
+            "baseURL": "http://127.0.0.1:8080/v1",
+          },
+          "models": {
+            "sonnet-5": {
+              "name": "Sonnet 5 (local)",
+              "limit": {
+                "context": 120000,
+                "output": 65536,
+              },
+            },
+          },
+        },
+      },
+    }

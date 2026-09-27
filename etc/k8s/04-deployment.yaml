@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jsc-opencode-web
+  namespace: opencode-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jsc-opencode-web
+  template:
+    metadata:
+      labels:
+        app: jsc-opencode-web
+    spec:
+      containers:
+        - name: jsc-opencode-web
+          image: jscdroiddev/jsc-opencode-dev:3.1.1
+          workingDir: /home/node/workspace
+          command:
+            - bash
+            - -lc
+          args:
+            - exec opencode serve --hostname 0.0.0.0 --port 4096
+          ports:
+            - containerPort: 4096
+          env:
+            - name: OPENCODE_SERVER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jsc-opencode-web-secret
+                  key: OPENCODE_SERVER_PASSWORD
+            - name: OPENCODE_SERVER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: jsc-opencode-web-secret
+                  key: OPENCODE_SERVER_USERNAME
+          volumeMounts:
+            - name: workspace-volume
+              mountPath: /home/node/workspace
+            - name: opencode-config-volume
+              mountPath: /home/node/.config/opencode/opencode.jsonc
+              subPath: opencode.jsonc
+              readOnly: true
+      volumes:
+        - name: workspace-volume
+          persistentVolumeClaim:
+            claimName: jsc-opencode-web-pvc
+        - name: opencode-config-volume
+          configMap:
+            name: jsc-opencode-web-config
+            items:
+              - key: opencode.jsonc
+                path: opencode.jsonc
