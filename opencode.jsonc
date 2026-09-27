@@ -1,0 +1,24 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "autoupdate": true,
+  "plugin": ["@dietrichgebert/ponytail"],
+  "enabled_providers": ["llama.cpp"],
+  "provider": {
+    "llama.cpp": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "llama-server",
+      "options": {
+        "baseURL": "http://127.0.0.1:8080/v1",
+      },
+      "models": {
+        "swift-3-8": {
+          "name": "Swift-3-8 (local)",
+          "limit": {
+            "context": 120000,
+            "output": 65536,
+          },
+        },
+      },
+    },
+  },
+}

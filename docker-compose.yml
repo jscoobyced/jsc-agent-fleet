@@ -1,0 +1,87 @@
+services:
+  jsc-opencode-dev:
+    image: jscdroiddev/jsc-opencode-dev:latest
+    container_name: jsc-opencode-dev
+    hostname: jsc-opencode-dev
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./src:/home/node/workspace/src
+      - ./.ai:/home/node/workspace/.ai
+      - ./skills:/home/node/.config/opencode/skills
+      - ./agents:/home/node/.config/opencode/agents
+      - ./opencode.jsonc:/home/node/.config/opencode/opencode.jsonc
+    networks:
+      - jsc-opencode-net
+
+  jsc-opencode-web:
+    image: jscdroiddev/jsc-opencode-dev:latest
+    container_name: jsc-opencode-web
+    hostname: jsc-opencode-web
+    working_dir: /home/node/workspace
+    stdin_open: true
+    tty: true
+    ports:
+      - "4096:4096"
+    environment:
+      - OPENCODE_SERVER_PASSWORD=${OPENCODE_SERVER_PASSWORD}
+    volumes:
+      - ./src:/home/node/workspace/src
+      - ./.ai:/home/node/workspace/.ai
+      - ./skills:/home/node/.config/opencode/skills
+      - ./agents:/home/node/.config/opencode/agents
+      - ./opencode.jsonc:/home/node/.config/opencode/opencode.jsonc
+    entrypoint: ["bash", "-lc"]
+    command:
+      - "exec opencode web --hostname 0.0.0.0 --port 4096"
+    networks:
+      - jsc-opencode-net
+
+
+  jsc-opencode-server:
+    image: jscdroiddev/jsc-opencode-dev:latest
+    container_name: jsc-opencode-server
+    hostname: jsc-opencode-server
+    working_dir: /home/node/workspace
+    stdin_open: true
+    tty: true
+    ports:
+      - "4096:4096"
+    environment:
+      - OPENCODE_SERVER_PASSWORD=${OPENCODE_SERVER_PASSWORD}
+    volumes:
+      - ./src:/home/node/workspace/src
+      - ./.ai:/home/node/workspace/.ai
+      - ./skills:/home/node/.config/opencode/skills
+      - ./agents:/home/node/.config/opencode/agents
+      - ./opencode.jsonc:/home/node/.config/opencode/opencode.jsonc
+    entrypoint: ["bash", "-lc"]
+    command:
+      - "exec opencode serve --hostname 0.0.0.0 --port 4096 --print-logs --log-level INFO"
+    networks:
+      - jsc-opencode-net
+
+  jsc-opencode-cli:
+    image: jscdroiddev/jsc-opencode-dev:latest
+    container_name: jsc-opencode-cli
+    hostname: jsc-opencode-cli
+    stdin_open: true
+    tty: true
+    working_dir: /home/node/workspace
+    environment:
+      - OPENCODE_SERVER_PASSWORD=${OPENCODE_SERVER_PASSWORD}
+    volumes:
+      - ./src:/home/node/workspace/src
+      - ./.ai:/home/node/workspace/.ai
+      - ./skills:/home/node/.config/opencode/skills
+      - ./agents:/home/node/.config/opencode/agents
+      - ./opencode.jsonc:/home/node/.config/opencode/opencode.jsonc
+    networks:
+      - jsc-opencode-net
+    # entrypoint: ["bash", "-lc"]
+    # command: ["opencode", "attach", "http://jsc-opencode-server:4096"]
+
+networks:
+  jsc-opencode-net:
+    name: jsc-opencode-net
+    driver: bridge

@@ -1,0 +1,67 @@
+version: 1
+
+settings:
+  retries:
+    agent_failure: 2
+    test_failure: 2
+    deployment_failure: 2
+    review_cycles: 3
+  sse_worker_pool_size: 2
+
+stages:
+  - id: stage-01-po
+    role: po
+    action: create_prd_v1
+    inputs:
+      - input/feature-request.md
+    outputs:
+      - requirements/prd-v1.md
+
+  - id: stage-02-ba
+    role: ba
+    action: analyze_and_refine_prd
+    depends_on:
+      - stage-01-po
+    inputs:
+      - requirements/prd-v1.md
+    outputs:
+      - requirements/ba-analysis.md
+      - requirements/prd-v2.md
+
+  - id: stage-03-lse
+    role: lse
+    action: architecture_and_task_planning
+    depends_on:
+      - stage-02-ba
+    inputs:
+      - requirements/ba-analysis.md
+      - requirements/prd-v2.md
+    outputs:
+      - architecture/architecture.md
+      - plan/implementation-plan.md
+      - plan/task-graph.yaml
+      - tickets/TASK-*.md
+
+  - id: stage-04-sse
+    role: sse
+    action: execute_task_graph
+    depends_on:
+      - stage-03-lse
+    inputs:
+      - architecture/architecture.md
+      - plan/implementation-plan.md
+      - plan/task-graph.yaml
+      - tickets/TASK-*.md
+    outputs:
+      - execution/TASK-XXX.md
+
+  - id: stage-05-doe
+    role: doe
+    action: stage_and_release_documentation
+    depends_on:
+      - stage-04-sse
+    inputs:
+      - execution/TASK-XXX.md
+    outputs:
+      - staging/staging-report.md
+      - releases/release-notes.md

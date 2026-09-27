@@ -1,0 +1,39 @@
+# Task graph template
+# Output path: .ai/runs/<RUN_ID>/plan/task-graph.yaml
+
+version: 1
+
+tasks:
+  - id: TASK-001
+    title: Setup foundation
+    depends_on: []
+    requirements: [REQ-001]
+    status: pending
+    notes: "Create the initial project scaffolding and shared configuration needed before implementation begins."
+
+  - id: TASK-002
+    title: Implement core logic
+    depends_on: [TASK-001]
+    requirements: [REQ-002, REQ-003]
+    status: pending
+    notes: "Deliver the primary domain or business logic required by the approved requirements."
+
+  - id: TASK-003
+    title: Implement API or integration surface
+    depends_on: [TASK-002]
+    requirements: [REQ-004]
+    status: pending
+    notes: "Expose the functionality through the required entry points, validation, and error handling."
+
+  - id: TASK-004
+    title: Add verification and regression coverage
+    depends_on: [TASK-002, TASK-003]
+    requirements: [REQ-005]
+    status: pending
+    notes: "Verify behavior with tests, linting, and type checks to meet Definition of Done."
+
+# Dependency rules:
+# - each task must declare its direct predecessors in depends_on
+# - each task should be traceable to one or more requirement IDs
+# - task order should reflect execution order, not simply conceptual grouping
+# - status can be pending, in_progress, blocked, or done

@@ -1,0 +1,63 @@
+version: 1
+run_id: RUN-20260926-001
+
+tasks:
+  - id: TASK-001
+    title: Scaffold page and server route
+    requirements:
+      - REQ-001
+      - REQ-002
+    depends_on: []
+    outputs:
+      - tickets/TASK-001.md
+      - execution/TASK-001.md
+
+  - id: TASK-002
+    title: Implement counter behavior
+    requirements:
+      - REQ-003
+      - REQ-004
+      - REQ-005
+    depends_on:
+      - TASK-001
+    outputs:
+      - tickets/TASK-002.md
+      - execution/TASK-002.md
+
+  - id: TASK-003
+    title: Accessibility and responsive polish
+    requirements:
+      - REQ-002
+      - REQ-006
+      - NFR-004
+    depends_on:
+      - TASK-001
+    outputs:
+      - tickets/TASK-003.md
+      - execution/TASK-003.md
+
+  - id: TASK-004
+    title: Automated test suite
+    requirements:
+      - NFR-003
+      - REQ-003
+      - REQ-004
+      - REQ-005
+      - REQ-006
+    depends_on:
+      - TASK-002
+      - TASK-003
+    outputs:
+      - tickets/TASK-004.md
+      - execution/TASK-004.md
+
+  - id: TASK-005
+    title: Integration and quality gate
+    requirements:
+      - NFR-001
+      - NFR-002
+    depends_on:
+      - TASK-004
+    outputs:
+      - tickets/TASK-005.md
+      - execution/TASK-005.md
