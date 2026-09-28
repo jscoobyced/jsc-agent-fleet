@@ -20,6 +20,6 @@ spec:
             path: "/"
             backend:
               service:
-                name: jsc-opencode-web
+                name: jsc-gateway-svc
                 port:
-                  number: 4096
+                  number: 3030

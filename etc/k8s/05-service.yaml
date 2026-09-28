@@ -4,11 +4,10 @@ metadata:
   name: jsc-opencode-web
   namespace: opencode-ns
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: jsc-opencode-web
   ports:
     - name: http
       port: 4096
       targetPort: 4096
-      protocol: TCP
