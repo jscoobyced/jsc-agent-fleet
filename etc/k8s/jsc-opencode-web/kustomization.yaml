@@ -4,10 +4,9 @@ kind: Kustomization
 namespace: opencode-ns
 
 resources:
-  - 00-namespace.yaml
+  #  - 00-namespace.yaml
   - 01-pvc.yaml
   - 02-configmap.yaml
   - 03-secret.yaml
   - 04-deployment.yaml
   - 05-service.yaml
-  - 06-ingress-opencode.yaml
