@@ -20,7 +20,7 @@ spec:
         runAsNonRoot: true
       containers:
         - name: jsc-opencode-web
-          image: jscdroiddev/jsc-opencode-dev:3.1.1
+          image: jscdroiddev/jsc-opencode-dev:3.1.2
           workingDir: /home/node/workspace
           command:
             - bash
